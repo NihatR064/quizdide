@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <title>İngilis Dili Quiz</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        #unitSelect {
+            margin: 20px 0;
+            padding: 10px 15px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: 2px solid #4CAF50;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            cursor: pointer;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+            outline: none;
+            width: 220px;
+        }
+        
+        #unitSelect:hover {
+            border-color: #388e3c;
+            background-color: #c8e6c9;
+        }
+        
+        #unitSelect:focus {
+            border-color: #1b5e20;
+            background-color: #a5d6a7;
+            box-shadow: 0 0 5px #1b5e20;
+        }
+        
+        #question {
+            font-size: 1.5rem;
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            min-width: 320px;
+            text-align: center;
+        }
+        
+        #options button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        #options button:hover {
+            background-color: #45a049;
+        }
+        
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            min-height: 28px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <select id="unitSelect">
+        <option value="">-- Unit seçin --</option>
+        <option value="unit1">Unit 1</option>
+        <option value="unit2">Unit 2</option>
+    </select>
+
+    <h1>Söz Quiz</h1>
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="result"></div>
+
+    <script>
+        // Sözlər (data.js-dən gətirilmiş kimi)
+        const allUnits = {
+            unit1: [{
+                en: "benevolent",
+                az: "xeyirxah və mərhəmətli"
+            }, {
+                en: "to diminish",
+                az: "azaltmaq, kiçiltmək"
+            }, {
+                en: "drawback",
+                az: "çatışmazlıq, mənfi cəhət"
+            }, {
+                en: "obsolete",
+                az: "artıq istifadə olunmayan, köhnəlmiş"
+            }, {
+                en: "contempt",
+                az: "nifrət, hörmətsizlik"
+            }, {
+                en: "indifferent",
+                az: "laqeyd, maraqsız"
+            }, {
+                en: "acute",
+                az: "kəskin, güclü dərəcədə"
+            }, {
+                en: "to compel",
+                az: "məcbur etmək"
+            }, {
+                en: "gorgeous",
+                az: "çox gözəl, cazibədar"
+            }, {
+                en: "notorious",
+                az: "pis ad çıxarmış, adı çıxmış"
+            }],
+            unit2: [{
+                en: "to assume",
+                az: "ehtimal etmək, fərz etmək"
+            }, {
+                en: "to allot",
+                az: "vermək, bölüşdürmək"
+            }, {
+                en: "convenience",
+                az: "rahatlıq, əlverişlilik"
+            }, {
+                en: "to elapse",
+                az: "vaxt keçmək"
+            }, {
+                en: "empathy",
+                az: "başqasının hisslərini anlama bacarığı"
+            }, {
+                en: "grueling",
+                az: "çox yorucu və çətin"
+            }, {
+                en: "mundane",
+                az: "maraqsız, adi"
+            }, {
+                en: "paltry",
+                az: "çox az, cüzi"
+            }, {
+                en: "to rectify",
+                az: "düzəltmək"
+            }, {
+                en: "sustenance",
+                az: "qidalanma, güc mənbəyi olan yemək"
+            }, {
+                en: "to assert",
+                az: "iddia etmək, əminliklə söyləmək"
+            }, {
+                en: "bachelor",
+                az: "subay kişi"
+            }, {
+                en: "cognitive",
+                az: "idrakla bağlı"
+            }, {
+                en: "to collide",
+                az: "toqquşmaq"
+            }, {
+                en: "competent",
+                az: "bacarıqlı, işini yaxşı bilən"
+            }, {
+                en: "to excel",
+                az: "fərqlənmək, çox yaxşı olmaq"
+            }, {
+                en: "expertise",
+                az: "peşəkar bilik və bacarıq"
+            }, {
+                en: "inherent",
+                az: "daxili, təbii şəkildə olan"
+            }, {
+                en: "to comprehend",
+                az: "tam şəkildə anlamaq"
+            }, {
+                en: "challenging",
+                az: "çətin, tələbkar"
+            }, {
+                en: "to subsidise",
+                az: "maliyyə dəstəyi vermək"
+            }, {
+                en: "to boost",
+                az: "artırmaq, gücləndirmək"
+            }, {
+                en: "stimulating",
+                az: "maraqlandıran, ruhlandıran"
+            }, {
+                en: "monotonous",
+                az: "təkrəng, cansıxıcı"
+            }, {
+                en: "glamorous",
+                az: "cazibədar, cəlbedici"
+            }]
+        };
+
+        let currentWords = [];
+        let currentQuestion = null;
+
+        function getRandomOptions(correct) {
+            let options = [correct.az];
+            while (options.length < 4) {
+                const randIndex = Math.floor(Math.random() * currentWords.length);
+                const randOption = currentWords[randIndex].az;
+                if (!options.includes(randOption)) {
+                    options.push(randOption);
+                }
+            }
+            return options.sort(() => Math.random() - 0.5);
+        }
+
+        function askQuestion() {
+            if (currentWords.length === 0) {
+                document.getElementById('question').innerText = "Zəhmət olmasa, yuxarıdakı siyahıdan unit seçin.";
+                document.getElementById('options').innerHTML = "";
+                return;
+            }
+
+            currentQuestion = currentWords[Math.floor(Math.random() * currentWords.length)];
+            document.getElementById('question').innerText = `Tərcümə et: ${currentQuestion.en}`;
+
+            const options = getRandomOptions(currentQuestion);
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = "";
+
+            options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.innerText = option;
+                btn.onclick = () => {
+                    const resultDiv = document.getElementById('result');
+                    if (option === currentQuestion.az) {
+                        resultDiv.innerText = "✅ Düzgün!";
+                    } else {
+                        resultDiv.innerText = `❌ Səhv! Doğru cavab: ${currentQuestion.az}`;
+                    }
+                    setTimeout(() => {
+                        resultDiv.innerText = "";
+                        askQuestion();
+                    }, 2000);
+                };
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        // Unit seçimi event listener
+        document.getElementById('unitSelect').addEventListener('change', function() {
+            const selectedUnit = this.value;
+            if (selectedUnit && allUnits[selectedUnit]) {
+                currentWords = allUnits[selectedUnit];
+                askQuestion();
+                document.getElementById('result').innerText = "";
+            } else {
+                currentWords = [];
+                document.getElementById('question').innerText = "";
+                document.getElementById('options').innerHTML = "";
+                document.getElementById('result').innerText = "";
+            }
+        });
+    </script>
+</body>
+
+</html>
