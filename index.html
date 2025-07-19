@@ -211,10 +211,10 @@
         let currentQuestion = null;
 
         function getRandomOptions(correct) {
-            let options = [correct.az];
+            let options = [correct.en];
             while (options.length < 4) {
                 const randIndex = Math.floor(Math.random() * currentWords.length);
-                const randOption = currentWords[randIndex].az;
+                const randOption = currentWords[randIndex].en;
                 if (!options.includes(randOption)) {
                     options.push(randOption);
                 }
@@ -230,7 +230,7 @@
             }
 
             currentQuestion = currentWords[Math.floor(Math.random() * currentWords.length)];
-            document.getElementById('question').innerText = `Tərcümə et: ${currentQuestion.en}`;
+            document.getElementById('question').innerText = `Tərcümə et: ${currentQuestion.az}`;
 
             const options = getRandomOptions(currentQuestion);
             const optionsDiv = document.getElementById('options');
@@ -241,10 +241,10 @@
                 btn.innerText = option;
                 btn.onclick = () => {
                     const resultDiv = document.getElementById('result');
-                    if (option === currentQuestion.az) {
+                    if (option === currentQuestion.en) {
                         resultDiv.innerText = "✅ Düzgün!";
                     } else {
-                        resultDiv.innerText = `❌ Səhv! Doğru cavab: ${currentQuestion.az}`;
+                        resultDiv.innerText = `❌ Səhv! Doğru cavab: ${currentQuestion.en}`;
                     }
                     setTimeout(() => {
                         resultDiv.innerText = "";
